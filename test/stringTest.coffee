@@ -26,3 +26,18 @@ describe 'string', ->
     it '«bépô» doit retourner «bepo»', ->
       source='bépô'
       'bepo'.should.equal source.noDiacritics()
+
+  describe 'vowels', ->
+    it '«bÉpôoa» doit retourner { e:1, o:2, a:1 }', ->
+      expected=
+        e:1
+        o:2
+        a:1
+      expected.should.deep.equal 'bÉpôoa'.vowels()
+
+  describe 'consonants', ->
+    it '«béPpôoa» doit retourner { b:1, p:2 }', ->
+      expected=
+        b:1
+        p:2
+      expected.should.deep.equal 'béPpôoa'.consonants()
