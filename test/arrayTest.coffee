@@ -1,7 +1,7 @@
 chai=require 'chai'
 chai.should()
 
-require '../src/array.coffee'
+require '../index.coffee'
 
 describe 'array', ->
   describe 'stringify', ->
