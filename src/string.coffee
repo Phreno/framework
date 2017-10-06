@@ -1,69 +1,28 @@
-
 ###
 # Chargement des ressources
 ###
-rsc={}
-rsc.priority=require '../rsc/letter_priority_fr.coffee'
-rsc.diacritics=require '../rsc/diacritics.coffee'
-rsc.alphabet=
-  e:
-    type:'vowel'
-  a:
-    type:'vowel'
-  i:
-    type:'vowel'
-  b:
-    type:'consonant'
-  c:
-    type:'consonant'
-  d:
-    type:'consonant'
-  f:
-    type:'consonant'
-  g:
-    type:'consonant'
-  h:
-    type:'consonant'
-  j:
-    type:'consonant'
-  k:
-    type:'consonant'
-  l:
-    type:'consonant'
-  m:
-    type:'consonant'
-  n:
-    type:'consonant'
-  o:
-    type:'vowel'
-  p:
-    type:'consonant'
-  q:
-    type:'consonant'
-  r:
-    type:'consonant'
-  s:
-    type:'consonant'
-  t:
-    type:'consonant'
-  u:
-    type:'vowel'
-  v:
-    type:'consonant'
-  w:
-    type:'consonant'
-  x:
-    type:'consonant'
-  y:
-    type:'vowel'
-  z:
-    type:'consonant'
+rsc                        = {}
+rsc.priority               = require '../rsc/letter_priority_fr.coffee'
+rsc.diacritics             = require '../rsc/diacritics.coffee'
+rsc.alphabet               = require '../rsc/alphabet.coffee'
+rsc.words_fr               = require '../rsc/words_fr.js'
+rsc.words_fr_no_diacritics = require '../rsc/words_fr_no_diacritics.js'
 
+###
+# Retourne un tableau contenant
+# toutes les voyelles de la
+# chaîne
+###
 rsc.vowels=[]
 Object
   .keys rsc.alphabet
   .forEach (letter)-> rsc.vowels.push letter if rsc.alphabet[letter].type is 'vowel'
 
+###
+# Retourne un tableau contenant
+# toutes les consonnes de la
+# chaîne
+###
 rsc.consonants=[]
 Object
   .keys rsc.alphabet
@@ -134,3 +93,32 @@ String::consonants=()->
     .forEach increment
   return consonants
 
+###
+# Retourne un tableau qui contient l'ensemble des
+# mots en français
+###
+String::frenchWords=()->
+  return
+    simple:rsc.words_fr_no_diacritics.slice 0
+    diacritics:rsc.words_fr.slice 0
+
+###
+# TODO: CONTAINS
+###
+
+
+###
+# Retourne les mots français qui contiennent
+# les lettres contenues dans la chaîne
+###
+String::guessFrench=()->
+  that=@
+  containsLetter=(word)->
+    return not that
+      .noDiacritics()
+      .split ''
+      .some (l)-> word.indexOf l is -1
+
+  return String::frenchWords()
+    .simple
+    .filter containsLetter
