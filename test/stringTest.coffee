@@ -41,3 +41,12 @@ describe 'string', ->
         b:1
         p:2
       expected.should.deep.equal 'béPpôoa'.consonants()
+
+  describe 'frenchWords', ->
+    it 'doit retourner la liste des mots français connus', ->
+      208913.should.equal String::frenchWords().diacritics.length
+      208913.should.equal String::frenchWords().simple.length
+
+  describe 'guessFrench', ->
+    it '', ->
+      1.should.equal JSON.stringify 'ambi'.guessFrench()
