@@ -48,5 +48,7 @@ describe 'string', ->
       208913.should.equal String::frenchWords().simple.length
 
   describe 'guessFrench', ->
-    it '', ->
-      1.should.equal JSON.stringify 'ambi'.guessFrench()
+    it 'ambi doit retourner 2698 résultats', ->
+      result='ambi'.guessFrench()
+      console.log(JSON.stringify result)
+      2698.should.equal result.length

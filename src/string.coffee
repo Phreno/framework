@@ -10,6 +10,7 @@ rsc.diacritics             = require '../rsc/diacritics.coffee'
 rsc.alphabet               = require '../rsc/alphabet.coffee'
 rsc.words_fr               = require '../rsc/words_fr.js'
 rsc.words_fr_no_diacritics = require '../rsc/words_fr_no_diacritics.js'
+rsc.words_fr_objectified   = require '../rsc/words_fr_objectified.js'
 
 ###
 # Retourne un tableau contenant
@@ -103,25 +104,25 @@ String::consonants=()->
 String::frenchWords=()-> return {
   simple     : rsc.words_fr_no_diacritics.slice 0
   diacritics : rsc.words_fr.slice 0
+  objectified: rsc.words_fr_objectified.slice 0
 }
-
-###
-# TODO: CONTAINS
-###
-
 
 ###
 # Retourne les mots français qui contiennent
 # les lettres contenues dans la chaîne
 ###
 String::guessFrench=()->
-  that=@
-  containsLetter=(word)->
-    return not that
-      .noDiacritics()
-      .split ''
-      .some (l)-> word.indexOf l is -1
-
-  return String::frenchWords()
-    .simple
-    .filter containsLetter
+  candidate=@
+    .noDiacritics()
+    .objectify()
+  suggestions=[]
+  populateIfContained=(word, index)->
+    cutOff=candidate.length > word.length
+    if cutOff
+      return
+    else if word.contains candidate
+      suggestions.push(String::frenchWords().diacritics[index])
+  String::frenchWords()
+    .objectified
+    .forEach populateIfContained
+  return suggestions
