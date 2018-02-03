@@ -6,15 +6,17 @@ var rsc;
 
 rsc = {};
 
-rsc.priority = require('../rsc/letter_priority_fr.coffee');
+rsc.priority = require('../rsc/letter_priority_fr.js');
 
-rsc.diacritics = require('../rsc/diacritics.coffee');
+rsc.diacritics = require('../rsc/diacritics.js');
 
-rsc.alphabet = require('../rsc/alphabet.coffee');
+rsc.alphabet = require('../rsc/alphabet.js');
 
 rsc.words_fr = require('../rsc/words_fr.js');
 
 rsc.words_fr_no_diacritics = require('../rsc/words_fr_no_diacritics.js');
+
+rsc.words_fr_objectified = require('../rsc/words_fr_objectified.js');
 
 
 /*
@@ -64,7 +66,7 @@ String.prototype.sortByFrequency = function() {
   var byFrequency;
   byFrequency = function(a, b) {
     if (!rsc.priority) {
-      throw 'Problème lors du chargement des ressources';
+      throw new Exception('Problème lors du chargement des ressources');
     }
     return rsc.priority[a] - rsc.priority[b];
   };
@@ -114,7 +116,7 @@ String.prototype.vowels = function() {
       return vowels[letter] = (vowels[letter] || 0) + 1;
     }
   };
-  this.noDiacritics().split``.forEach(increment);
+  this.noDiacritics().split('').forEach(increment);
   return vowels;
 };
 
@@ -131,7 +133,7 @@ String.prototype.consonants = function() {
       return consonants[letter] = (consonants[letter] || 0) + 1;
     }
   };
-  this.noDiacritics().split``.forEach(increment);
+  this.noDiacritics().split('').forEach(increment);
   return consonants;
 };
 
@@ -144,14 +146,10 @@ String.prototype.consonants = function() {
 String.prototype.frenchWords = function() {
   return {
     simple: rsc.words_fr_no_diacritics.slice(0),
-    diacritics: rsc.words_fr.slice(0)
+    diacritics: rsc.words_fr.slice(0),
+    objectified: rsc.words_fr_objectified.slice(0)
   };
 };
-
-
-/*
- * TODO: CONTAINS
- */
 
 
 /*
@@ -160,12 +158,18 @@ String.prototype.frenchWords = function() {
  */
 
 String.prototype.guessFrench = function() {
-  var containsLetter, that;
-  that = this;
-  containsLetter = function(word) {
-    return !that.noDiacritics().split('').some(function(l) {
-      return word.indexOf(l === -1);
-    });
+  var candidate, populateIfContained, suggestions;
+  candidate = this.noDiacritics().objectify();
+  suggestions = [];
+  populateIfContained = function(word, index) {
+    var cutOff;
+    cutOff = candidate.length > word.length;
+    if (cutOff) {
+
+    } else if (word.contains(candidate)) {
+      return suggestions.push(String.prototype.frenchWords().diacritics[index]);
+    }
   };
-  return String.prototype.frenchWords().simple.filter(containsLetter);
+  String.prototype.frenchWords().objectified.forEach(populateIfContained);
+  return suggestions;
 };

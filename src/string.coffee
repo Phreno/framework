@@ -5,9 +5,9 @@
 # Chargement des ressources
 ###
 rsc                        = {}
-rsc.priority               = require '../rsc/letter_priority_fr.coffee'
-rsc.diacritics             = require '../rsc/diacritics.coffee'
-rsc.alphabet               = require '../rsc/alphabet.coffee'
+rsc.priority               = require '../rsc/letter_priority_fr.js'
+rsc.diacritics             = require '../rsc/diacritics.js'
+rsc.alphabet               = require '../rsc/alphabet.js'
 rsc.words_fr               = require '../rsc/words_fr.js'
 rsc.words_fr_no_diacritics = require '../rsc/words_fr_no_diacritics.js'
 rsc.words_fr_objectified   = require '../rsc/words_fr_objectified.js'
