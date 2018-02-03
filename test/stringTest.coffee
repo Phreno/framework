@@ -1,7 +1,7 @@
 chai=require 'chai'
 chai.should()
 
-require '../index.coffee'
+require '../src/index.coffee'
 
 
 describe 'string', ->

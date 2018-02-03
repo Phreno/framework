@@ -1,3 +1,6 @@
+
+# coffeelint: disable=max_line_length
+
 ###
 # Chargement des ressources
 ###
@@ -43,7 +46,7 @@ String::reverse=->
 String::sortByFrequency=->
   byFrequency=(a,b)->
     if not rsc.priority
-      throw 'Problème lors du chargement des ressources'
+      throw new Exception 'Problème lors du chargement des ressources'
     return rsc.priority[a]-rsc.priority[b]
   return @split ''
     .sort byFrequency
@@ -78,7 +81,7 @@ String::vowels=->
   vowels={}
   increment=(letter)-> vowels[letter]=(vowels[letter] or 0) + 1 if rsc.alphabet[letter].type is 'vowel'
   @noDiacritics()
-    .split''
+    .split ''
     .forEach increment
   return vowels
 
@@ -89,7 +92,7 @@ String::consonants=()->
   consonants={}
   increment=(letter)-> consonants[letter]=(consonants[letter] or 0) + 1 if rsc.alphabet[letter].type is 'consonant'
   @noDiacritics()
-    .split''
+    .split ''
     .forEach increment
   return consonants
 
@@ -97,10 +100,10 @@ String::consonants=()->
 # Retourne un tableau qui contient l'ensemble des
 # mots en français
 ###
-String::frenchWords=()->
-  return
-    simple:rsc.words_fr_no_diacritics.slice 0
-    diacritics:rsc.words_fr.slice 0
+String::frenchWords=()-> return {
+  simple     : rsc.words_fr_no_diacritics.slice 0
+  diacritics : rsc.words_fr.slice 0
+}
 
 ###
 # TODO: CONTAINS
